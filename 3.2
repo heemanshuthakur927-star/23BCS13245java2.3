@@ -1,0 +1,41 @@
+// File: PartB_StudentFiltering.java
+
+import java.util.*;
+import java.util.stream.*;
+
+class Student {
+    String name;
+    int age;
+    double grade;
+
+    public Student(String name, int age, double grade) {
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return name + ", Age: " + age + ", Grade: " + grade;
+    }
+}
+
+public class PartB_StudentFiltering {
+    public static void main(String[] args) {
+        List<Student> students = Arrays.asList(
+            new Student("Tom", 20, 85.5),
+            new Student("Lucy", 22, 91.2),
+            new Student("Mark", 19, 78.9),
+            new Student("Jane", 21, 88.1)
+        );
+
+        // Filter students with grade > 80, then sort by grade descending
+        List<Student> topStudents = students.stream()
+            .filter(s -> s.grade > 80)
+            .sorted((s1, s2) -> Double.compare(s2.grade, s1.grade))
+            .collect(Collectors.toList());
+
+        System.out.println("Top Students (grade > 80):");
+        topStudents.forEach(System.out::println);
+    }
+}
