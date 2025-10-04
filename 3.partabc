@@ -1,0 +1,108 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Employee {
+    int id;
+    String name;
+    double salary;
+
+    Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String toString() {
+        return id + " - " + name + " - $" + salary;
+    }
+}
+
+class Student {
+    String name;
+    int age;
+    double grade;
+
+    Student(String name, int age, double grade) {
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+    }
+
+    public String toString() {
+        return name + " - Age: " + age + " - Grade: " + grade;
+    }
+}
+
+class Product {
+    int id;
+    String name;
+    double price;
+    String category;
+
+    Product(int id, String name, double price, String category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.category = category;
+    }
+
+    public String toString() {
+        return id + " - " + name + " - $" + price + " - " + category;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Part A: Sorted Employees by Salary ===");
+        List<Employee> employees = Arrays.asList(
+            new Employee(1, "Alice", 70000),
+            new Employee(2, "Bob", 50000),
+            new Employee(3, "Charlie", 60000)
+        );
+
+        employees.sort((e1, e2) -> Double.compare(e1.salary, e2.salary));
+        employees.forEach(System.out::println);
+
+        System.out.println("\n=== Part B: Filtered and Sorted Students (Grade >= 75) ===");
+        List<Student> students = Arrays.asList(
+            new Student("John", 20, 85.0),
+            new Student("Jane", 19, 65.0),
+            new Student("Mike", 22, 90.0),
+            new Student("Sara", 18, 72.5)
+        );
+
+        List<Student> filteredStudents = students.stream()
+            .filter(s -> s.grade >= 75)
+            .sorted(Comparator.comparingDouble(s -> s.grade))
+            .collect(Collectors.toList());
+
+        filteredStudents.forEach(System.out::println);
+
+        System.out.println("\n=== Part C: Stream Operations on Products ===");
+        List<Product> products = Arrays.asList(
+            new Product(1, "Laptop", 1200.0, "Electronics"),
+            new Product(2, "Phone", 800.0, "Electronics"),
+            new Product(3, "Desk", 250.0, "Furniture"),
+            new Product(4, "Chair", 150.0, "Furniture"),
+            new Product(5, "Headphones", 200.0, "Electronics")
+        );
+
+        System.out.println("\nProducts under $500:");
+        products.stream()
+            .filter(p -> p.price < 500)
+            .forEach(System.out::println);
+
+        System.out.println("\nElectronics product names:");
+        List<String> electronicsNames = products.stream()
+            .filter(p -> p.category.equals("Electronics"))
+            .map(p -> p.name)
+            .collect(Collectors.toList());
+        electronicsNames.forEach(System.out::println);
+
+        double averagePrice = products.stream()
+            .mapToDouble(p -> p.price)
+            .average()
+            .orElse(0.0);
+        System.out.println("\nAverage product price: $" + averagePrice);
+    }
+}
